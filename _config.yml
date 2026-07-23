@@ -31,17 +31,11 @@ github_username:  ""
 theme: minimal-mistakes-jekyll
 minimal_mistakes_skin: default  # 主题风格（default/dark/air/aqua/neon等）
 
-# 导航栏
-navigation:
-  - title: "首页"
-    url: "/"
-  - title: "关于"
-    url: "/about/"
-  - title: "归档"
-    url: "/archive/"
-
 plugins:
   - jekyll-feed
+  - jekyll-include-cache
+  - jekyll-paginate
+  - jekyll-sitemap
 
 # Exclude from processing.
 # The following items will not be processed, by default.
