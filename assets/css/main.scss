@@ -1,0 +1,11 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+
+// 皮肤（在 _config.yml 中配置 minimal_mistakes_skin）
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
+
+// 主题核心样式
+@import "minimal-mistakes";

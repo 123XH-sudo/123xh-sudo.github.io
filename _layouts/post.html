@@ -1,0 +1,75 @@
+---
+layout: default
+---
+
+<article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+  {% if page.title %}
+  <meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">
+  {% endif %}
+  {% if page.excerpt %}
+  <meta itemprop="description" content="{{ page.excerpt | markdownify | strip_html | strip_newlines | escape_once }}">
+  {% endif %}
+  {% if page.date %}
+  <meta itemprop="datePublished" content="{{ page.date | date_to_xmlschema }}">
+  {% endif %}
+  {% if page.last_modified_at %}
+  <meta itemprop="dateModified" content="{{ page.last_modified_at | date_to_xmlschema }}">
+  {% endif %}
+
+  <div class="page__inner-wrap">
+    <header>
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        {{ page.title | markdownify | strip_html | strip_newlines }}
+      </h1>
+      {% if page.date %}
+        <p class="page__meta">
+          <i class="far fa-calendar-alt" aria-hidden="true"></i>
+          {{ page.date | date: "%Y-%m-%d" }}
+        </p>
+      {% endif %}
+    </header>
+
+    <section class="page__content" itemprop="text">
+      {{ content }}
+    </section>
+
+    <footer class="page__meta">
+      {% if page.categories %}
+        <p class="page__taxonomy">
+          <strong>
+            <i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>
+            分类:
+          </strong>
+          <span itemprop="keywords">
+            {% for category in page.categories %}
+              <a href="{{ category | slugify | prepend: '/categories/#' | relative_url }}" class="page__taxonomy-item" rel="tag">
+                {{ category }}
+              </a>
+              {%- unless forloop.last -%}
+                <span class="sep">, </span>
+              {% endunless -%}
+            {% endfor %}
+          </span>
+        </p>
+      {% endif %}
+      {% if page.tags %}
+        <p class="page__taxonomy">
+          <strong>
+            <i class="fas fa-fw fa-tags" aria-hidden="true"></i>
+            标签:
+          </strong>
+          <span itemprop="keywords">
+            {% for tag in page.tags %}
+              <a href="{{ tag | slugify | prepend: '/tags/#' | relative_url }}" class="page__taxonomy-item" rel="tag">
+                {{ tag }}
+              </a>
+              {%- unless forloop.last -%}
+                <span class="sep">, </span>
+              {% endunless -%}
+            {% endfor %}
+          </span>
+        </p>
+      {% endif %}
+    </footer>
+  </div>
+</article>
