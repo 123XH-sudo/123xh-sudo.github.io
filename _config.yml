@@ -1,4 +1,4 @@
-```yaml                                                                        
+                                                                    
    title: 我的博客                                                              
    email: 2972646005@qq.com                                                     
    description: 我的个人技术博客                                                
@@ -11,5 +11,4 @@
                                                                                 
    plugins:                                                                     
      - jekyll-feed                                                              
-     - jekyll-include-cache                                                     
- ```                                
+     - jekyll-include-cache                                                                             
