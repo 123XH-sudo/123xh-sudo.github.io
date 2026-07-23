@@ -1,4 +1,3 @@
-                                                                  
    name: 部署博客                                                               
    on:                                                                          
      push:                                                                      
