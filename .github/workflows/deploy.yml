@@ -1,7 +1,7 @@
 name: 部署博客
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   workflow_dispatch:
 permissions:
   contents: read
