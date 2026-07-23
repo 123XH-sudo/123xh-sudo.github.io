@@ -1,0 +1,15 @@
+```yaml                                                                        
+   title: 我的博客                                                              
+   email: 2972646005@qq.com                                                     
+   description: 我的个人技术博客                                                
+   baseurl: ""                                                                  
+   url: "https://123xh-sudo.github.io"                                          
+                                                                                
+   # 主题！这是关键                                                             
+   remote_theme: mmistakes/minimal-mistakes                                     
+   minimal_mistakes_skin: default                                               
+                                                                                
+   plugins:                                                                     
+     - jekyll-feed                                                              
+     - jekyll-include-cache                                                     
+ ```                                
