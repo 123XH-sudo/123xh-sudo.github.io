@@ -29,7 +29,7 @@ author:
 # =============================================================================
 # Build settings - 使用 GitHub Pages 兼容的 remote_theme
 # =============================================================================
-remote_theme: mmistakes/minimal-mistakes
+remote_theme: mmistakes/minimal-mistakes@4.24.0
 minimal_mistakes_skin: default
 
 # 分页设置
