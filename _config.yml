@@ -1,36 +1,21 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
+# =============================================================================
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-
+# =============================================================================
 title: 困困困忙忙忙
 email: 2972646005@qq.com
 description: >-
   我的个人技术博客，分享编程、技术和生活。
-baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://123XH-sudo.github.io"
+baseurl: ""
+repository: "123XH-sudo/123xh-sudo.github.io"
 github_username: "123XH-sudo"
 
 locale: zh-CN
 timezone: Asia/Shanghai
-date_format: "%Y-%m-%d"
 
+# =============================================================================
 # 作者信息（显示在侧边栏）
+# =============================================================================
 author:
   name     : "123XH"
   avatar   : "/assets/images/bio-photo.jpg"
@@ -41,32 +26,78 @@ author:
       icon: "fab fa-github"
       url: "https://github.com/123XH-sudo"
 
-# Build settings
+# =============================================================================
+# Build settings - 使用 GitHub Pages 兼容的 remote_theme
+# =============================================================================
 remote_theme: mmistakes/minimal-mistakes
-minimal_mistakes_skin: default  # 主题风格（default/dark/air/aqua/neon等）
+minimal_mistakes_skin: default
 
+# 分页设置
+paginate: 5
+paginate_path: /page:num/
+
+# 搜索
+search: true
+search_full_content: true
+
+# 文章摘要
+teaser: /assets/images/default-teaser.jpg
+words_per_minute: 200
+
+# 页脚
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/123XH-sudo"
+
+# =============================================================================
+# 默认布局设置 —— 这是关键！
+# =============================================================================
+defaults:
+  # 所有文章
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      share: true
+      related: true
+      show_date: true
+      toc: true
+      toc_sticky: true
+  # 所有页面
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+      share: true
+      show_date: true
+
+# =============================================================================
+# 插件 —— github-pages 已内置 jekyll-remote-theme
+# =============================================================================
 plugins:
   - jekyll-feed
   - jekyll-include-cache
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-gist
 
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# =============================================================================
+# 排除文件
+# =============================================================================
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
+  - README.md
+  - .gitignore
+
+include:
+  - _pages
