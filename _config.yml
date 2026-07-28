@@ -42,7 +42,7 @@ author:
       url: "https://github.com/123XH-sudo"
 
 # Build settings
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: default  # 主题风格（default/dark/air/aqua/neon等）
 
 plugins:
