@@ -1,6 +1,7 @@
 ---
 layout: single
 title: "焕创AI 系统工作包分解与技术栈方案"
+published: false
 date: 2026-07-28 12:00:00 +0800
 categories: 技术方案
 tags: [焕创AI, WBS, 技术栈, 重构, TypeScript, NestJS, React]
