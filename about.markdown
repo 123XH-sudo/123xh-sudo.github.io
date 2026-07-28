@@ -1,18 +1,20 @@
 ---
-layout: page
-title: About
+layout: single
+title: 关于
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+## 关于我
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+你好，我是 123XH，一名正在学习中的全栈开发者。
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+这个博客用来记录我在编程学习过程中的笔记、心得和踩坑记录，内容包括但不限于：
 
+- 前端 / 后端开发
+- 服务器部署与运维
+- 开源项目实践
+- 工具使用技巧
 
-[jekyll-organization]: https://github.com/jekyll
+## 关于本站
+
+本站基于 [Jekyll](https://jekyllrb.com/) 搭建，使用 [Minimal Mistakes](https://mmistakes.github.io/minimal-mistakes/) 主题，托管在 [GitHub Pages](https://pages.github.com/)。

@@ -24,8 +24,22 @@ description: >-
   我的个人技术博客，分享编程、技术和生活。
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://123XH-sudo.github.io"
-twitter_username: 
-github_username:  ""
+github_username: "123XH-sudo"
+
+locale: zh-CN
+timezone: Asia/Shanghai
+date_format: "%Y-%m-%d"
+
+# 作者信息（显示在侧边栏）
+author:
+  name     : "123XH"
+  avatar   : "/assets/images/bio-photo.jpg"
+  bio      : "全栈开发学习者，记录成长路上的点滴。"
+  location : "中国"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/123XH-sudo"
 
 # Build settings
 theme: minimal-mistakes-jekyll
