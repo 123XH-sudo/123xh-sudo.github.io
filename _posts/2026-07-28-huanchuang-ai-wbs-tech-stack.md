@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: single
 title: "焕创AI 系统工作包分解与技术栈方案"
 date: 2026-07-28 12:00:00 +0800
 categories: 技术方案
