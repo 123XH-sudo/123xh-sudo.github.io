@@ -87,6 +87,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
+  - jekyll-remote-theme
 
 # =============================================================================
 # 排除文件
