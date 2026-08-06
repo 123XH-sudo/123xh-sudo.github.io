@@ -12,6 +12,7 @@ github_username: "123XH-sudo"
 
 locale: zh-CN
 timezone: Asia/Shanghai
+future: true
 
 # =============================================================================
 # 作者信息（显示在侧边栏）
