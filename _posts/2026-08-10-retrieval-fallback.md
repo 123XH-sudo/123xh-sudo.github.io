@@ -1,9 +1,18 @@
 ---
-layout: post
+layout: single
 title: "RAG 学习笔记：多轮检索与回退策略"
-date: 2026-08-10
-tags: [RAG, 多轮检索, 回退策略, 对话历史, Dify]
-categories: [技术学习, RAG]
+date: 2026-08-10 00:00:00 +0800
+categories: 
+  - 学习笔记
+tags:
+  - RAG
+  - 多轮检索
+  - 回退策略
+  - 对话历史
+  - Dify
+
+toc: true
+toc_sticky: true
 ---
 
 ## 一、前情回顾

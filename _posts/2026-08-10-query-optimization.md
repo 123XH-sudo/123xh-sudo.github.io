@@ -1,9 +1,19 @@
 ---
-layout: post
+layout: single
 title: "RAG 学习笔记：查询优化策略"
-date: 2026-08-10
-tags: [RAG, 查询优化, 查询改写, HyDE, Multi-Query, Dify]
-categories: [技术学习, RAG]
+date: 2026-08-10 00:00:00 +0800
+categories: 
+  - 学习笔记
+tags:
+  - RAG
+  - 查询优化
+  - 查询改写
+  - HyDE
+  - Multi-Query
+  - Dify
+
+toc: true
+toc_sticky: true
 ---
 
 ## 一、为什么需要查询优化
