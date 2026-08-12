@@ -38,7 +38,7 @@ toc_sticky: true
 
 核心方案：
 
-- 前端：纯 HTML + CSS + JS，做成一个 `chat-widget.html`，通过 Jekyll 的 `{% include %}` 引入
+- 前端：纯 HTML + CSS + JS，做成一个 `chat-widget.html`，通过 Jekyll 的 `{% raw %}{% include %}{% endraw %}` 引入
 - 通信：通过 Fetch API 调用 Dify Chat API，流式读取 SSE 响应
 - 样式：固定在页面右下角的悬浮窗口，点击展开/收起
 
@@ -177,9 +177,11 @@ on:
 
 ### 4.3 变更检测
 
+{% raw %}
 ```bash
 git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- _posts/
 ```
+{% endraw %}
 
 用 `git diff` 对比两次 commit 之间的文件差异，只提取 `_posts/` 下的文件。这样每次同步只上传真正变更的文件，不会重复上传。
 
@@ -187,12 +189,14 @@ git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- _po
 
 Dify 提供了知识库 API 的 `create-by-file` 接口，直接上传 Markdown 文件即可，Dify 会自动分段和索引。
 
+{% raw %}
 ```bash
 curl -X POST "https://api.dify.ai/v1/datasets/$DATASET_ID/document/create-by-file" \
   -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}" \
   -F "file=@$file" \
   -F "indexing_technique=high_quality"
 ```
+{% endraw %}
 
 API Key 通过 GitHub Secrets 管理，不会暴露在 workflow 文件里。
 
