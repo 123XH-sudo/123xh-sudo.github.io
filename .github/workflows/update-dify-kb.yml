@@ -28,18 +28,12 @@ jobs:
             exit 0
           fi
 
-          API_BASE="https://api.dify.ai/v1"
-          DATASET_ID="2b024fe6-adef-4922-aa2b-bd63d73cb9a6"
-
           while IFS= read -r file; do
             filename=$(basename "$file")
             echo "Uploading: $filename"
 
-            RESP=$(curl -s -w "\n%{http_code}" -X POST "$API_BASE/datasets/$DATASET_ID/document/create-by-file" \
-              -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}" \
-              -F "file=@$file" \
-              -F "indexing_technique=high_quality" \
-              -F 'process_rule={"mode":"automatic","rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":false}],"segmentation":{"separator":"##","max_tokens":1000}}}')
+            RESP=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.KB_PROXY_URL }}" \
+              -F "file=@$file")
 
             HTTP_CODE=$(echo "$RESP" | tail -1)
             BODY=$(echo "$RESP" | sed '$d')

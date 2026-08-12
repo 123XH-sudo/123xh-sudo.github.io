@@ -2,3 +2,5 @@ _site/
 .jekyll-cache/
 .bundle/
 vendor/cloudflare-worker.js
+cloudflare-worker.js
+cloudflare-worker-kb.js
