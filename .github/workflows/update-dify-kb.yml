@@ -1,0 +1,76 @@
+name: 同步知识库到 Dify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_posts/**.md'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 列出变更文件
+        id: changed
+        run: |
+          echo "检测到的文件变更："
+          git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- _posts/ | tee changed_files.txt
+
+      - name: 同步到 Dify 知识库
+        run: |
+          if [ ! -s changed_files.txt ]; then
+            echo "没有 _posts 文件变更，跳过同步"
+            exit 0
+          fi
+
+          DATASET_ID="2b024fe6-adef-4922-aa2b-bd63d73cb9a6"
+          API_BASE="https://api.dify.ai/v1"
+
+          # 获取当前知识库中所有文档
+          echo "获取知识库现有文档列表..."
+          EXISTING_DOCS=$(curl -s -X GET "$API_BASE/datasets/$DATASET_ID/documents" \
+            -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}" \
+            -H "Content-Type: application/json")
+          
+          echo "现有文档：$EXISTING_DOCS"
+
+          # 遍历变更文件
+          while IFS= read -r file; do
+            filename=$(basename "$file")
+            echo "处理文件：$filename"
+            
+            # 查找知识库中是否已有同名文档
+            DOC_ID=$(echo "$EXISTING_DOCS" | python3 -c "
+import json, sys
+try:
+    data = json.load(sys.stdin)
+    for doc in data.get('data', []):
+        if doc.get('name') == '$filename':
+            print(doc.get('id', ''))
+            break
+except: pass
+" 2>/dev/null)
+
+            # 如果存在旧文档，删除它
+            if [ -n "$DOC_ID" ]; then
+              echo "删除旧文档：$DOC_ID"
+              curl -s -X DELETE "$API_BASE/datasets/$DATASET_ID/documents/$DOC_ID" \
+                -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}"
+            fi
+
+            # 上传新文档
+            echo "上传: $filename"
+            UPLOAD_RESULT=$(curl -s -X POST "$API_BASE/datasets/$DATASET_ID/document/create-by-file" \
+              -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}" \
+              -F "file=@$file" \
+              -F "indexing_technique=high_quality" \
+              -F "process_rule={\"mode\":\"automatic\",\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":false}],\"segmentation\":{\"separator\":\"##\",\"max_tokens\":1000}}}")
+
+            echo "上传结果：$UPLOAD_RESULT"
+
+          done < changed_files.txt
+
+          echo "知识库同步完成！"
