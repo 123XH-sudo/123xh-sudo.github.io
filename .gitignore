@@ -1,4 +1,4 @@
 _site/
 .jekyll-cache/
 .bundle/
-vendor/
+vendor/cloudflare-worker.js
