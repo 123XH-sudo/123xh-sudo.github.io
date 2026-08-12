@@ -1,29 +1,28 @@
-name: 同步知识库到 Dify
+name: sync-dify-kb
 
 on:
   push:
-    branches: [main]
-    paths:
-      - '_posts/**'
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: 检出代码
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 获取变更文件
+      - name: Get changed files
         run: |
           git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- _posts/ | tee changed_files.txt
-          echo "--- 变更文件列表 ---"
+          echo "--- changed files ---"
           cat changed_files.txt
 
-      - name: 上传到 Dify 知识库
+      - name: Upload to Dify
         run: |
           if [ ! -s changed_files.txt ]; then
-            echo "无 _posts 变更，跳过"
+            echo "No _posts changes, skip"
             exit 0
           fi
 
@@ -32,22 +31,21 @@ jobs:
 
           while IFS= read -r file; do
             filename=$(basename "$file")
-            echo "上传: $filename"
+            echo "Uploading: $filename"
 
             RESP=$(curl -s -w "\n%{http_code}" -X POST "$API_BASE/datasets/$DATASET_ID/document/create-by-file" \
               -H "Authorization: Bearer ${{ secrets.DIFY_API_KEY }}" \
               -F "file=@$file" \
               -F "indexing_technique=high_quality" \
-              -F "process_rule={\"mode\":\"automatic\",\"rules\":{\"pre_processing_rules\":[{\"id\":\"remove_extra_spaces\",\"enabled\":true},{\"id\":\"remove_urls_emails\",\"enabled\":false}],\"segmentation\":{\"separator\":\"##\",\"max_tokens\":1000}}}")
+              -F 'process_rule={"mode":"automatic","rules":{"pre_processing_rules":[{"id":"remove_extra_spaces","enabled":true},{"id":"remove_urls_emails","enabled":false}],"segmentation":{"separator":"##","max_tokens":1000}}}')
 
             HTTP_CODE=$(echo "$RESP" | tail -1)
             BODY=$(echo "$RESP" | sed '$d')
-
             echo "HTTP $HTTP_CODE: $BODY"
 
             if [ "$HTTP_CODE" != "201" ] && [ "$HTTP_CODE" != "200" ]; then
-              echo "::warning::上传 $filename 失败 (HTTP $HTTP_CODE)"
+              echo "::warning::Upload $filename failed (HTTP $HTTP_CODE)"
             fi
           done < changed_files.txt
 
-          echo "同步完成"
+          echo "Sync done"
