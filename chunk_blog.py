@@ -1,6 +1,8 @@
 """
-博客分块脚本：读取 _posts/ 下的 Markdown 文件，按标题切分为 chunk。
-每个 chunk 是将来存入向量数据库的最小检索单元。
+博客分块脚本（初版，阶段 1 原型）。
+
+阶段 2 起请使用 rag-backend 入库流水线：
+    cd rag-backend && python -m app.ingestion.index --full
 """
 import yaml
 import os

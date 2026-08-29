@@ -1,0 +1,13 @@
+# RAG Backend — Phase 1 pinned deps (verify with pip install -r requirements.txt)
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-dotenv>=1.0.0
+pydantic-settings>=2.0.0
+
+langgraph>=0.2.0
+langchain-core>=0.3.0
+langchain-text-splitters>=0.3.0
+
+chromadb>=0.5.0
+FlagEmbedding>=1.2.0
+PyYAML>=6.0.0

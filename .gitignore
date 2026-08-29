@@ -4,3 +4,12 @@ _site/
 vendor/cloudflare-worker.js
 cloudflare-worker.js
 cloudflare-worker-kb.js
+
+# RAG backend
+rag-backend/.venv/
+rag-backend/.env
+.data/
+rag-backend/data/
+rag-backend/__pycache__/
+rag-backend/**/__pycache__/
+*.pyc
