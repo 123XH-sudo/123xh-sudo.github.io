@@ -21,7 +21,7 @@ toc_sticky: true
 > | 仓库内路径 | `rag-backend/app/retrieval/types.py`、`vector_store.py` |
 > | GitHub 原文 | [types.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/types.py) · [vector_store.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/vector_store.py) |
 > | Phase 2 完结 | [index.py 带读]({% post_url 2026-08-30-rag-ingestion-index-walkthrough %}) |
-> | Phase 3 系列 | **types + vector**（本文）→ corpus/bm25 → hybrid → rerank/engine → eval |
+> | Phase 3 系列 | **types + vector**（本文）→ [corpus + bm25]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) → hybrid → rerank/engine → eval |
 > | CLI | [`python -m app.retrieval.search`](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/search.py) |
 >
 > 全文约 types 39 行 + vector_store 61 行。Phase 2 把 chunk **写进** Chroma，Phase 3 从 Chroma **查出来**。这篇记录读码时的真实卡点和 Python 语法困惑。
@@ -240,7 +240,7 @@ python scripts/verify_retrieval.py
 | 文件 | 状态 |
 | --- | --- |
 | **types.py + vector_store.py** | ✅ **本文** |
-| corpus.py + bm25.py | 待读 |
+| [corpus.py + bm25.py]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) | ✅ 已有博客 |
 | hybrid.py | 待读 |
 | reranker.py + engine.py | 待读 |
 | search.py + eval/ | 待读 |
@@ -255,4 +255,4 @@ python scripts/verify_retrieval.py
 4. **`__init__`** 由 `@dataclass` 自动生成，负责「填对象字段」
 5. **CLI 默认 `hybrid_rerank`**，不是 types 里的 `"vector"` 默认
 
-下一篇：**corpus.py + bm25.py** —— 不用向量，关键词怎么搜、为什么能补 vector 的短板。
+下一篇：**[corpus.py + bm25.py 带读]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %})** —— 关键词检索、lru_cache、zip 与 enumerate。
