@@ -281,8 +281,8 @@ python -m app.ingestion.index --file 2026-08-06-RAG.md
 | --- | --- |
 | loader / chunker / embedder | ✅ 已有博客 |
 | **store.py** | ✅ **本文** |
-| pipeline.py | 待读（串起 loader→store） |
-| index.py | 待读（CLI 入口） |
+| [pipeline.py]({% post_url 2026-08-30-rag-ingestion-pipeline-walkthrough %}) | ✅ 已有博客 |
+| index.py | 可选（CLI 入口，pipeline 篇 §8 已覆盖） |
 
 ## 14. 小结
 
@@ -296,4 +296,4 @@ python -m app.ingestion.index --file 2026-08-06-RAG.md
 4. **改旧文先 delete 再 upsert**；新文 delete 空操作，upsert 即新增
 5. 先记**六函数总表**，再抠每行，比从第 17 行硬啃轻松
 
-下一篇 **[pipeline.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/ingestion/pipeline.py)**：把 loader → chunker → embedder → store 串成 `--full` / `--file` 两条完整流水线。
+下一篇 **[pipeline.py 带读]({% post_url 2026-08-30-rag-ingestion-pipeline-walkthrough %})**：把 loader → chunker → embedder → store 串成 `--full` / `--file` 两条完整流水线。
