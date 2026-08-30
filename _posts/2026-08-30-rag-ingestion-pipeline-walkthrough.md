@@ -302,9 +302,9 @@ python -m app.ingestion.index --full
 | --- | --- |
 | loader / chunker / embedder / store | ✅ 已有博客 |
 | **pipeline.py** | ✅ **本文** |
-| index.py | 可选（49 行，上文 §8 已覆盖） |
+| [index.py]({% post_url 2026-08-30-rag-ingestion-index-walkthrough %}) | ✅ 已有博客 |
 
-Phase 2 **数据入库**读码至此可以收束；下一步是 **Phase 3 检索**（query → embed → Chroma 相似搜索 → 拼 prompt）。
+Phase 2 **数据入库**读码在 [index 篇]({% post_url 2026-08-30-rag-ingestion-index-walkthrough %}) 收束；下一步是 **Phase 3 检索**（query → embed → Chroma 相似搜索 → 拼 prompt）。
 
 ## 12. 小结
 

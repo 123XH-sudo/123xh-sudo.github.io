@@ -282,7 +282,7 @@ python -m app.ingestion.index --file 2026-08-06-RAG.md
 | loader / chunker / embedder | ✅ 已有博客 |
 | **store.py** | ✅ **本文** |
 | [pipeline.py]({% post_url 2026-08-30-rag-ingestion-pipeline-walkthrough %}) | ✅ 已有博客 |
-| index.py | 可选（CLI 入口，pipeline 篇 §8 已覆盖） |
+| [index.py]({% post_url 2026-08-30-rag-ingestion-index-walkthrough %}) | ✅ 已有博客 |
 
 ## 14. 小结
 
