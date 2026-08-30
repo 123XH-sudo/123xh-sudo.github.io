@@ -39,17 +39,30 @@ rag-backend/
 │       ├── pipeline.py     # 流水线编排
 │       └── index.py        # CLI 入口
 ├── scripts/
+│   ├── verify_chroma.py      # 阶段 1
+│   ├── verify_embedding.py   # 阶段 1
+│   └── verify_ingestion.py   # 阶段 2
 ├── data/chroma/            # 向量库持久化
 └── data/models/            # BGE-M3 本地模型
 ```
 
-## 阶段 2 索引基线（本机实测）
+## 阶段 2 索引基线（本机实测 2026-08-30）
 
 | 指标 | 数值 |
 | --- | --- |
-| 文章数 | 13 |
-| chunk 总数 | 179 |
-| 全量索引耗时 | ~534s（CPU，无 GPU） |
+| 文章数 | 19 |
+| chunk 总数 | 298 |
+| 全量索引耗时 | ~534s（13 篇 / CPU，历史基线） |
+| 增量单篇 | ~30–52s（视 chunk 数而定） |
+| 增量旧文重索引 | 总数不膨胀（实测 179→179） |
+
+## 阶段 2 验证
+
+```bash
+python scripts/verify_ingestion.py
+```
+
+验证项：metadata 六字段、1024 维向量、19 篇全部入库、`source_file` 过滤、检索探针（「什么是 RAG」→ Top-1 命中 `2026-08-06-RAG.md`）。
 
 ## 分块策略
 
@@ -69,7 +82,7 @@ python -m app.main   # /health
 ## 常见问题
 
 **Q: 全量索引很慢？**  
-CPU 上 BGE-M3 约 8–15s/batch，179 chunk 约 9 分钟属正常。有 GPU 可在 `embedder.py` 开启 `use_fp16=True`。
+CPU 上 BGE-M3 约 8–15s/batch，298 chunk 全量约 9–15 分钟属正常。有 GPU 可在 `embedder.py` 开启 `use_fp16=True`。
 
 **Q: 增量更新如何工作？**  
 先 `delete(where source_file=xxx)` 删旧 chunk，再 upsert 新 chunk，不会重复累积。

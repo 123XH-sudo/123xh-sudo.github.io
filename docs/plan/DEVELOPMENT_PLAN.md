@@ -161,11 +161,12 @@ Step 7: 运行验证，记录遇到的问题
 
 ### 4.5 验收标准
 
-- [x] 全量索引本仓库所有 `_posts/` 文章，chunk 数 ≥ 30（实测 179）
-- [x] 单文件增量更新后，Chroma 中对应 chunk 已更新（总数不重复膨胀）
-- [x] 每个 chunk 含完整 metadata，可通过 metadata 过滤
-- [x] 索引耗时记录在案（全量 ~534s / 13 篇 / CPU）
-- [ ] 阶段博客发布
+- [x] 全量索引本仓库所有 `_posts/` 文章，chunk 数 ≥ 30（2026-08-30 实测 **298** / 19 篇）
+- [x] 单文件增量更新后，Chroma 中对应 chunk 已更新（总数不重复膨胀；实测重索引 `2026-08-06-RAG.md` 179→179）
+- [x] 每个 chunk 含完整 metadata，可通过 metadata 过滤（`verify_ingestion.py` 通过）
+- [x] 索引耗时记录在案（全量 ~534s / 13 篇 / CPU；增量单篇 ~30–52s）
+- [x] 阶段博客发布（ingestion 系列 7 篇）
+- [x] 检索探针：query embed + Chroma query 可返回相关 chunk（Top-1 → `2026-08-06-RAG.md`）
 
 ### 4.6 阶段面试自测
 

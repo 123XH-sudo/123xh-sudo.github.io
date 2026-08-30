@@ -12,14 +12,15 @@
 | [技术栈选型文档](docs/tech-stack/TECH_STACK.md) | 选型理由与替代方案 |
 | [开发计划](docs/plan/DEVELOPMENT_PLAN.md) | 七阶段任务与验收标准 |
 
-**当前阶段**：阶段 2 知识库构建 ✅ → 待启动 **阶段 3：检索系统实现与优化**
+**当前阶段**：阶段 2 知识库构建 ✅（已验证）→ 待启动 **阶段 3：检索系统实现与优化**
 
 ## 知识库索引（阶段 2）
 
 ```bash
 cd rag-backend && source .venv/bin/activate
-python -m app.ingestion.index --full    # 全量索引
-python -m app.ingestion.index --stats   # 查看 chunk 数
+python -m app.ingestion.index --full      # 全量索引
+python -m app.ingestion.index --stats     # 查看 chunk 数（当前 298 / 19 篇）
+python scripts/verify_ingestion.py        # 阶段 2 验收脚本
 ```
 
 ## 仓库结构
