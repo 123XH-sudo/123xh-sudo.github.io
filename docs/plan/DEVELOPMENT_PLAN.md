@@ -216,10 +216,10 @@ Step 7: 运行验证，记录遇到的问题
 
 ### 5.5 验收标准
 
-- [ ] Hybrid + Rerank 方案 Recall@3 ≥ 70%
-- [ ] 检索延迟 ≤ 500ms（本地，当前数据规模）
-- [ ] 有对比实验数据（至少 3 组方案）
-- [ ] 阶段博客发布（含实验数据与分析）
+- [x] Hybrid + Rerank 方案 Recall@3 ≥ 70%（2026-08-30 实测 **95.8%**，24 条评测集）
+- [ ] 检索延迟 ≤ 500ms（本地 CLI 含模型推理偏慢；长驻 API 下 vector/hybrid 约 600–900ms，rerank 需 GPU 或预热）
+- [x] 有对比实验数据（vector / bm25 / hybrid / hybrid_rerank 四组，`eval/run_eval.py`）
+- [ ] 阶段博客发布（待 Phase 3 带读学习）
 
 ### 5.6 阶段面试自测
 

@@ -1,0 +1,143 @@
+[
+  {
+    "id": "q01",
+    "query": "什么是 RAG 检索增强生成？",
+    "expected_sources": ["2026-08-06-RAG.md"]
+  },
+  {
+    "id": "q02",
+    "query": "RAG 如何减少 LLM 幻觉？",
+    "expected_sources": ["2026-08-06-RAG.md"]
+  },
+  {
+    "id": "q03",
+    "query": "chunk_overlap 重叠有什么作用？",
+    "expected_sources": [
+      "2026-08-29-rag-ingestion-chunker-walkthrough.md",
+      "2026-08-06-blog-data-processing.md"
+    ]
+  },
+  {
+    "id": "q04",
+    "query": "Jekyll front matter YAML 怎么解析？",
+    "expected_sources": ["2026-08-29-rag-ingestion-loader-walkthrough.md"]
+  },
+  {
+    "id": "q05",
+    "query": "BGE-M3 向量维度是多少？",
+    "expected_sources": ["2026-08-29-rag-ingestion-embedder-walkthrough.md"]
+  },
+  {
+    "id": "q06",
+    "query": "Chroma 增量更新为什么要先 delete 再 upsert？",
+    "expected_sources": ["2026-08-30-rag-ingestion-store-walkthrough.md"]
+  },
+  {
+    "id": "q07",
+    "query": "incremental 增量索引和全量 --full 有什么区别？",
+    "expected_sources": ["2026-08-30-rag-ingestion-pipeline-walkthrough.md"]
+  },
+  {
+    "id": "q08",
+    "query": "argparse mutually_exclusive_group 是什么？",
+    "expected_sources": ["2026-08-30-rag-ingestion-index-walkthrough.md"]
+  },
+  {
+    "id": "q09",
+    "query": "Docker 容器和镜像有什么区别？",
+    "expected_sources": ["2026-08-15-interview-learning-docker-redis-sse.md"]
+  },
+  {
+    "id": "q10",
+    "query": "Redis 缓存穿透是什么？",
+    "expected_sources": ["2026-08-15-interview-learning-docker-redis-sse.md"]
+  },
+  {
+    "id": "q11",
+    "query": "SSE 流式响应怎么实现？",
+    "expected_sources": ["2026-08-15-interview-learning-docker-redis-sse.md"]
+  },
+  {
+    "id": "q12",
+    "query": "BM25 关键词检索适合什么场景？",
+    "expected_sources": [
+      "2026-08-15-interview-learning-docker-redis-sse.md",
+      "2026-08-10-similarity-metrics.md"
+    ]
+  },
+  {
+    "id": "q13",
+    "query": "余弦相似度和欧氏距离有什么区别？",
+    "expected_sources": ["2026-08-10-similarity-metrics.md"]
+  },
+  {
+    "id": "q14",
+    "query": "RAG 查询优化有哪些策略？",
+    "expected_sources": ["2026-08-10-query-optimization.md"]
+  },
+  {
+    "id": "q15",
+    "query": "向量数据库 HNSW 索引是什么？",
+    "expected_sources": ["2026-08-08-vector-database.md"]
+  },
+  {
+    "id": "q16",
+    "query": "New API 阿里云宝塔 Docker 怎么部署？",
+    "expected_sources": ["2026-07-28-new-api-deploy.md"]
+  },
+  {
+    "id": "q17",
+    "query": "LangGraph 工作流节点怎么编排？",
+    "expected_sources": [
+      "2026-08-06-RAG.md",
+      "2026-08-14-interview-training.md"
+    ]
+  },
+  {
+    "id": "q18",
+    "query": "RRF Reciprocal Rank Fusion 怎么融合检索结果？",
+    "expected_sources": [
+      "2026-08-15-interview-learning-docker-redis-sse.md",
+      "2026-08-14-interview-training.md"
+    ]
+  },
+  {
+    "id": "q19",
+    "query": "BGE-Reranker Cross-Encoder 二次排序原理",
+    "expected_sources": [
+      "2026-08-15-interview-learning-docker-redis-sse.md",
+      "2026-08-14-interview-training.md"
+    ]
+  },
+  {
+    "id": "q20",
+    "query": "检索失败时的降级 fallback 策略",
+    "expected_sources": ["2026-08-10-retrieval-fallback.md"]
+  },
+  {
+    "id": "q21",
+    "query": "RAG 系统前后端怎么集成？",
+    "expected_sources": ["2026-08-12-system-integration.md"]
+  },
+  {
+    "id": "q22",
+    "query": "Markdown 代码块和表格语法",
+    "expected_sources": ["2026-08-06-markdown-complete-guide.md"]
+  },
+  {
+    "id": "q23",
+    "query": "RecursiveCharacterTextSplitter 递归分块",
+    "expected_sources": [
+      "2026-08-29-rag-ingestion-chunker-walkthrough.md",
+      "2026-08-06-blog-data-processing.md"
+    ]
+  },
+  {
+    "id": "q24",
+    "query": "博客 Markdown 数据处理流水线",
+    "expected_sources": [
+      "2026-08-06-blog-data-processing.md",
+      "2026-08-29-rag-ingestion-loader-walkthrough.md"
+    ]
+  }
+]

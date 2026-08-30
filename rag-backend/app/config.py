@@ -16,6 +16,9 @@ BACKEND_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_LOCAL_EMBEDDING = (
     BACKEND_ROOT / "data/models/models/Xorbits--bge-m3/snapshots/master"
 )
+DEFAULT_LOCAL_RERANKER = (
+    BACKEND_ROOT / "data/models/models/Xorbits--bge-reranker-v2-m3/snapshots/master"
+)
 
 
 class Settings(BaseSettings):
@@ -42,6 +45,13 @@ class Settings(BaseSettings):
     # 分块参数
     chunk_size: int = 512
     chunk_overlap: int = 64
+
+    # 检索（阶段 3）
+    retrieval_top_k: int = 5
+    retrieval_candidate_k: int = 15
+    hybrid_rrf_k: int = 60
+    rerank_batch_size: int = 8
+    reranker_model: str = "BAAI/bge-reranker-v2-m3"
 
     # Server
     host: str = "0.0.0.0"
@@ -72,6 +82,26 @@ class Settings(BaseSettings):
     @property
     def embedding_is_local(self) -> bool:
         return Path(self.embedding_model_path).is_dir()
+
+    @property
+    def reranker_model_path(self) -> str:
+        """Reranker 模型路径；优先本地。"""
+        p = Path(self.reranker_model)
+        resolved = p if p.is_absolute() else BACKEND_ROOT / p
+        if resolved.is_dir() and (resolved / "config.json").exists():
+            return str(resolved)
+
+        if DEFAULT_LOCAL_RERANKER.is_dir() and (
+            (DEFAULT_LOCAL_RERANKER / "model.safetensors").exists()
+            or (DEFAULT_LOCAL_RERANKER / "pytorch_model.bin").exists()
+        ):
+            return str(DEFAULT_LOCAL_RERANKER)
+
+        return self.reranker_model
+
+    @property
+    def reranker_is_local(self) -> bool:
+        return Path(self.reranker_model_path).is_dir()
 
     @property
     def posts_path(self) -> Path:
