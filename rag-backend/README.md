@@ -2,7 +2,7 @@
 
 个人博客 RAG 智能问答系统 — 后端服务（FastAPI + LangGraph + Chroma + BGE-M3）
 
-**当前阶段**：阶段 3 — 检索系统实现与优化 ✅（代码完成，待带读学习）
+**当前阶段**：阶段 4 — 问答系统核心逻辑 ✅（LangGraph + `/chat` SSE）
 
 ## 快速开始
 
@@ -10,7 +10,21 @@
 cd rag-backend
 source .venv/bin/activate
 
-# 检索（默认 hybrid_rerank）
+# 阶段 4：启动 API（需 .env 中 DEEPSEEK_API_KEY）
+python -m app.main
+
+# SSE 问答（另开终端）
+curl -N -X POST http://localhost:8000/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -d '{"query":"什么是 RAG？","provider":"deepseek"}'
+
+# 可用模型
+curl http://localhost:8000/api/v1/models
+
+# 阶段 4 验证
+python scripts/verify_chat.py
+
+# 检索（阶段 3 CLI）
 python -m app.retrieval.search "什么是 RAG？"
 python -m app.retrieval.search "Docker 部署" --mode hybrid --top-k 3
 python -m app.retrieval.search "BM25" --mode bm25
@@ -39,7 +53,12 @@ rag-backend/
 ├── app/
 │   ├── config.py
 │   ├── main.py
-│   ├── graph/              # LangGraph 工作流（阶段 4 扩展）
+│   ├── graph/              # LangGraph（hello + RAG 工作流）
+│   │   ├── hello_graph.py
+│   │   ├── state.py
+│   │   └── rag_graph.py
+│   ├── llm/                # 阶段 4：Prompt + LLM Provider
+│   ├── api/                # 阶段 4：/chat SSE、/models
 │   ├── ingestion/          # 阶段 2：数据入库
 │   │   ├── loader.py … index.py
 │   └── retrieval/          # 阶段 3：检索
@@ -96,6 +115,37 @@ python scripts/verify_ingestion.py
 python scripts/verify_retrieval.py   # 四模式 smoke test
 python eval/run_eval.py              # 完整 Recall 评测
 ```
+
+## 阶段 4 问答 API
+
+```
+POST /api/v1/chat  →  SSE 流（status / token / sources / done）
+GET  /api/v1/models →  可用 LLM provider
+```
+
+LangGraph 流程：
+
+```
+START → retrieve（hybrid_rerank）→ 置信度 OK？
+                                    ├─ 是 → API 层流式调 LLM generate
+                                    └─ 否 → fallback 诚实降级
+```
+
+SSE 事件格式（与 `_includes/chat-widget.html` 对齐）：
+
+```json
+{"type":"status","data":"检索中..."}
+{"type":"sources","data":[{"title":"...","relevance_score":0.82,...}]}
+{"type":"token","data":"RAG"}
+{"type":"done","data":""}
+```
+
+```bash
+python scripts/verify_chat.py
+python -m app.main
+```
+
+需在 `.env` 配置 `DEEPSEEK_API_KEY` 才能流式生成；未配置时检索仍可用，但无法调用 LLM。
 
 ## 分块策略
 

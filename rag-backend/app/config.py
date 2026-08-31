@@ -28,9 +28,14 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # LLM（阶段 4 启用）
+    # LLM（阶段 4）
     deepseek_api_key: str = ""
     deepseek_base_url: str = "https://api.deepseek.com/v1"
+    llm_model: str = "deepseek-chat"
+    retrieval_confidence_min: float = -5.0  # rerank 分阈值；无结果时仍走 fallback
+
+    # CORS（逗号分隔，* 表示允许所有）
+    cors_origins: str = "*"
 
     # Embedding
     embedding_model: str = "BAAI/bge-m3"
