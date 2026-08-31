@@ -17,33 +17,41 @@ toc_sticky: true
 
 > **对照阅读：Phase 3 检索（第二篇）**
 >
-> | | |
-> | --- | --- |
-> | 仓库内路径 | `rag-backend/app/retrieval/corpus.py`、`bm25.py` |
-> | GitHub 原文 | [corpus.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/corpus.py) · [bm25.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/bm25.py) |
-> | 上一篇 | [types.py + vector_store.py]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) |
-> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → **corpus + bm25**（本文）→ hybrid → rerank/engine → eval |
-> | CLI | `python -m app.retrieval.search "..." --mode bm25` |
+>
+> |            |                                                                                                                                                                                                                           |
+> | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | 仓库内路径      | `rag-backend/app/retrieval/corpus.py`、`bm25.py`                                                                                                                                                                           |
+> | GitHub 原文  | [corpus.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/corpus.py) · [bm25.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/bm25.py) |
+> | 上一篇        | [types.py + vector_store.py]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %})                                                                                                                            |
+> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → **corpus + bm25**（本文）→ [hybrid]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) → rerank/engine → eval |
+> | CLI        | `python -m app.retrieval.search "..." --mode bm25`                                                                                                                                                                        |
+>
 >
 > corpus 23 行 + bm25 79 行。vector 比「语义指纹」，BM25 比「关键词有没有出现」。这篇记录读码时的真实卡点和 Python 语法困惑（`lru_cache`、`zip`、`lambda`、Chroma `.get` 等）。
+
+
 
 ## 1. 为什么需要 BM25？
 
 [上一篇 vector 带读]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %})里，检索靠 embed + Chroma 相似度。读 bm25 之前我的疑问是：**既然有 vector 了，为什么还要 BM25？**
 
-| | vector | bm25（本文） |
-| --- | --- | --- |
-| 比什么 | 1024 维向量相似度 | 问题里的**词**在正文里出现多少 |
-| 擅长 | 「RAG 是什么」≈「检索增强生成」 | `Docker`、`BM25`、`argparse` 等**原词** |
-| 速度 | 慢（要 embed，~4s） | 快（纯算分，~286ms） |
-| 谁提供 | Chroma `.query` | 第三方库 `rank_bm25` + 内存索引 |
+
+|     | vector             | bm25（本文）                           |
+| --- | ------------------ | ---------------------------------- |
+| 比什么 | 1024 维向量相似度        | 问题里的**词**在正文里出现多少                  |
+| 擅长  | 「RAG 是什么」≈「检索增强生成」 | `Docker`、`BM25`、`argparse` 等**原词** |
+| 速度  | 慢（要 embed，~4s）     | 快（纯算分，~286ms）                      |
+| 谁提供 | Chroma `.query`    | 第三方库 `rank_bm25` + 内存索引            |
+
 
 本机实测同一问题 `"什么是 RAG？" --top-k 3`：
 
-| 模式 | Top-1 | 耗时 |
-| --- | --- | --- |
-| vector | `2026-08-06-RAG.md` | ~4123ms |
-| bm25 | `2026-08-29-rag-ingestion-chunker-walkthrough.md` | ~286ms |
+
+| 模式     | Top-1                                             | 耗时      |
+| ------ | ------------------------------------------------- | ------- |
+| vector | `2026-08-06-RAG.md`                               | ~4123ms |
+| bm25   | `2026-08-29-rag-ingestion-chunker-walkthrough.md` | ~286ms  |
+
 
 两种都认为相关，但**排序不同**、**分数刻度不同**（vector ~0.65，bm25 ~7.2，不能直接比大小）。这就是后面 `hybrid.py` 要把两路结果融合的原因。
 
@@ -77,19 +85,23 @@ data = collection.get(include=["documents", "metadatas"])
 return data["ids"], data["documents"], data["metadatas"]
 ```
 
-| 部分 | 含义 |
-| --- | --- |
-| `.get` | **Chroma 库自带方法**（不是 Python dict 的 get） |
-| 不传 `where` | **取出 collection 里全部记录**（298 条） |
+
+| 部分              | 含义                                     |
+| --------------- | -------------------------------------- |
+| `.get`          | **Chroma 库自带方法**（不是 Python dict 的 get） |
+| 不传 `where`      | **取出 collection 里全部记录**（298 条）         |
 | `include=[...]` | 要哪些字段；这里要正文和 metadata，**不要 embedding** |
+
 
 对比 Phase 2 / vector：
 
-| 方法 | 干什么 |
-| --- | --- |
-| `.upsert` | 写入 |
-| `.query` | 向量相似度搜 Top-K |
-| `.get` | 取出记录（可全量，可 `where` 筛选） |
+
+| 方法        | 干什么                    |
+| --------- | ---------------------- |
+| `.upsert` | 写入                     |
+| `.query`  | 向量相似度搜 Top-K           |
+| `.get`    | 取出记录（可全量，可 `where` 筛选） |
+
 
 store 里按文章删旧 chunk 用过 `where`：
 
@@ -108,12 +120,14 @@ def load_corpus() -> tuple[list[str], list[str], list[dict]]:
     return data["ids"], data["documents"], data["metadatas"]
 ```
 
-| 次数 | 行为 |
-| --- | --- |
-| 第 1 次 | 真读 Chroma，返回 3 个 list |
-| 第 2 次起（同进程） | 直接返回缓存，不再读盘 |
 
-`invalidate_corpus_cache()` 在增量索引后应清缓存（目前 CLI 未自动调，知道即可）。
+| 次数          | 行为                    |
+| ----------- | --------------------- |
+| 第 1 次       | 真读 Chroma，返回 3 个 list |
+| 第 2 次起（同进程） | **直接返回缓存，不再读盘**       |
+
+
+`invalidate_corpus_cache()` **在增量索引后应清缓存（**目前 CLI 未自动调，知道即可）。
 
 ## 4. bm25.py：分词、建索引、算分
 
@@ -137,10 +151,12 @@ def tokenize(text: str) -> list[str]:
     return _TOKEN_RE.findall(text)
 ```
 
-| 规则 | 匹配 |
-| --- | --- |
-| `[\u4e00-\u9fff]` | 一个汉字 |
-| `[a-zA-Z0-9_]+` | 连续英文/数字/下划线 |
+
+| 规则                | 匹配          |
+| ----------------- | ----------- |
+| `[\u4e00-\u9fff]` | 一个汉字        |
+| `[a-zA-Z0-9_]+`   | 连续英文/数字/下划线 |
+
 
 例：
 
@@ -155,6 +171,8 @@ tokenize("什么是 RAG？")
 tokenized = [tokenize(doc) for doc in documents]   # 298 篇各自的分词 list
 BM25Okapi(tokenized)   # 吃「已分好词」的 list，不会自动分词
 ```
+
+
 
 ### 4.2 `_get_bm25_index()`（25–29 行）与第 48 行怎么衔接？
 
@@ -182,6 +200,8 @@ bm25, ids, documents, metadatas = _get_bm25_index()
 
 ### 4.3 第 51–61 行：全库 vs 单篇，两种配对方式
 
+
+
 #### 没加 `--file`（我终端走的路径）— else 分支
 
 ```python
@@ -201,12 +221,14 @@ scores = bm25.get_batch_scores(query_tokens, indices)
 ranked = sorted(zip(indices, scores), key=lambda x: x[1], reverse=True)[:k]
 ```
 
-`indices` 可能是 `[5, 6, 7, 12, ...]` **不连续**。此时 `scores[j]` 是 **`indices[j]` 那个 chunk** 的分，不是「第 j 号 chunk」的分。
+`indices` 可能是 `[5, 6, 7, 12, ...]` **不连续**。此时 `scores[j]` 是 `indices[j]` **那个 chunk** 的分，不是「第 j 号 chunk」的分。
 
-| 写法 | 何时用 |
-| --- | --- |
-| `enumerate(scores)` | 全库：`scores[i]` 就是 chunk i |
+
+| 写法                     | 何时用                       |
+| ---------------------- | ------------------------- |
+| `enumerate(scores)`    | 全库：`scores[i]` 就是 chunk i |
 | `zip(indices, scores)` | 单篇：真实下标在 `indices` 里，必须配对 |
+
 
 **不能**在单篇分支写 `enumerate(scores)`，否则会把 `0,1,2` 误当成 chunk 编号，`ids[idx]` 会取错。
 
@@ -229,6 +251,8 @@ def get_score(pair):
     return pair[1]
 sorted(..., key=get_score, reverse=True)
 ```
+
+
 
 ### 4.5 FAQ：`zip` 语法
 
@@ -265,25 +289,31 @@ python -m app.retrieval.search "incremental" --mode bm25 \
   --file 2026-08-30-rag-ingestion-pipeline-walkthrough.md
 ```
 
+
+
 ## 7. Phase 3 带读进度
 
-| 文件 | 状态 |
-| --- | --- |
+
+| 文件                         | 状态                                                                        |
+| -------------------------- | ------------------------------------------------------------------------- |
 | types.py + vector_store.py | ✅ [上一篇]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) |
-| **corpus.py + bm25.py** | ✅ **本文** |
-| hybrid.py | 待读 |
-| reranker.py + engine.py | 待读 |
-| search.py + eval/ | 待读 |
+| **corpus.py + bm25.py**    | ✅ **本文**                                                                  |
+| [hybrid.py]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) | ✅ 已有博客 |
+| [reranker.py + engine.py]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) | ✅ 已有博客 |
+| search.py + eval/          | 待读                                                                        |
+
+
+
 
 ## 8. 小结
 
 **读码收获：**
 
-1. **corpus `.get` 无 where = 读全库**；BM25 要自己拿全部正文建索引，不像 vector 用 `.query`
-2. **`_get_bm25_index` 建的是「整本词典」**，缓存的是全库索引 + 三个 list，**不是**某个问题的搜索结果
-3. **`BM25Okapi` 来自 rank_bm25**，分词靠 `tokenize()`，中文单字 + 英文单词
-4. **全库用 `enumerate(scores)`，单篇用 `zip(indices, scores)`** —— 因为下标是否连续
-5. **`key=lambda x: x[1]`** = 按元组里第二项（分数）排序
+1. **corpus** `.get` **无 where = 读全库**；BM25 要自己拿全部正文建索引，不像 vector 用 `.query`
+2. `_get_bm25_index` **建的是「整本词典」**，缓存的是全库索引 + 三个 list，**不是**某个问题的搜索结果
+3. `BM25Okapi` **来自 rank_bm25**，分词靠 `tokenize()`，中文单字 + 英文单词
+4. **全库用** `enumerate(scores)`**，单篇用** `zip(indices, scores)` —— 因为下标是否连续
+5. `key=lambda x: x[1]` = 按元组里第二项（分数）排序
 6. vector 与 bm25 **Top-1 可能不同**，分数刻度不可比，需要 Hybrid 融合
 
-下一篇：**hybrid.py** —— RRF 怎么把 vector 和 bm25 两路排名合在一起。
+下一篇：**[hybrid.py 带读]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %})** —— RRF 怎么把 vector 和 bm25 两路排名合在一起。
