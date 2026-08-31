@@ -23,7 +23,7 @@ toc_sticky: true
 > | 仓库内路径      | `rag-backend/app/retrieval/corpus.py`、`bm25.py`                                                                                                                                                                           |
 > | GitHub 原文  | [corpus.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/corpus.py) · [bm25.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/bm25.py) |
 > | 上一篇        | [types.py + vector_store.py]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %})                                                                                                                            |
-> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → **corpus + bm25**（本文）→ [hybrid]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) → rerank/engine → eval |
+> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → **corpus + bm25**（本文）→ [hybrid]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) → [rerank + engine]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) → [收官]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 > | CLI        | `python -m app.retrieval.search "..." --mode bm25`                                                                                                                                                                        |
 >
 >
@@ -300,7 +300,7 @@ python -m app.retrieval.search "incremental" --mode bm25 \
 | **corpus.py + bm25.py**    | ✅ **本文**                                                                  |
 | [hybrid.py]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) | ✅ 已有博客 |
 | [reranker.py + engine.py]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) | ✅ 已有博客 |
-| search.py + eval/          | 待读                                                                        |
+| [search.py + eval/]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) | ✅ [收官篇]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 
 
 

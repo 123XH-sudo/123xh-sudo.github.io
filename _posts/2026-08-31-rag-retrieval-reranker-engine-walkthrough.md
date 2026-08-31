@@ -22,7 +22,7 @@ toc_sticky: true
 > | 仓库内路径 | `rag-backend/app/retrieval/reranker.py`、`engine.py` |
 > | GitHub 原文 | [reranker.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/reranker.py) · [engine.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/engine.py) |
 > | 上一篇 | [hybrid.py]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) |
-> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → [corpus + bm25]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) → [hybrid]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) → **rerank + engine**（本文）→ eval |
+> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → [corpus + bm25]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) → [hybrid]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) → **rerank + engine**（本文）→ [收官]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 > | CLI | `python -m app.retrieval.search "..."`（默认 `hybrid_rerank`） |
 >
 > reranker 80 行 + engine 54 行。**先逐行读码、自己思考，再整理成博客。** 这篇记录 Cross-Encoder 精排、四种检索模式怎么串、以及读码时把模式搞混的纠错。
@@ -274,7 +274,7 @@ python -m app.retrieval.search "什么是 RAG？" --mode hybrid --top-k 3
 | corpus.py + bm25.py | ✅ [第二篇]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) |
 | hybrid.py | ✅ [第三篇]({% post_url 2026-08-31-rag-retrieval-hybrid-walkthrough %}) |
 | **reranker.py + engine.py** | ✅ **本文** |
-| search.py + eval/ | 待读 |
+| [search.py + eval/]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) | ✅ [收官篇]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 
 ## 9. 小结
 
@@ -285,4 +285,4 @@ python -m app.retrieval.search "什么是 RAG？" --mode hybrid --top-k 3
 5. **new RetrievalHit** — score 换 rerank 分，`rank_source="rerank"`
 6. **CLI 默认 `hybrid_rerank`** — engine 里 hybrid(15) → rerank(5)
 
-下一篇：**search.py + eval/** —— CLI 参数、`Recall@K` 怎么评。（待写）
+下一篇：**[Phase 3 收官 search + eval 总览]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %})** —— 大白话收束、Recall 验收、系列完结。

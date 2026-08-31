@@ -22,7 +22,7 @@ toc_sticky: true
 > | 仓库内路径 | `rag-backend/app/retrieval/hybrid.py` |
 > | GitHub 原文 | [hybrid.py](https://github.com/123XH-sudo/123xh-sudo.github.io/blob/main/rag-backend/app/retrieval/hybrid.py) |
 > | 上一篇 | [corpus.py + bm25.py]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) |
-> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → [corpus + bm25]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) → **hybrid**（本文）→ [rerank + engine]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) → eval |
+> | Phase 3 系列 | [types + vector]({% post_url 2026-08-30-rag-retrieval-types-vector-walkthrough %}) → [corpus + bm25]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) → **hybrid**（本文）→ [rerank + engine]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) → [收官]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 > | CLI | `python -m app.retrieval.search "..." --mode hybrid` |
 >
 > 全文 73 行。**这篇是先跟 AI 逐行读码、自己思考完，再整理成博客的**——不是一上来就看成品文档。记录的是 vector + bm25 两路榜单怎么合成一路、以及我读码时的真实卡点和纠错。
@@ -300,7 +300,7 @@ hybrid 取 ~15 候选 → reranker 精读「问题+段落」→ 最终 Top5
 | corpus.py + bm25.py | ✅ [第二篇]({% post_url 2026-08-30-rag-retrieval-corpus-bm25-walkthrough %}) |
 | **hybrid.py** | ✅ **本文** |
 | [reranker.py + engine.py]({% post_url 2026-08-31-rag-retrieval-reranker-engine-walkthrough %}) | ✅ 已有博客 |
-| search.py + eval/ | 待读 |
+| [search.py + eval/]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) | ✅ [收官篇]({% post_url 2026-08-31-rag-retrieval-search-eval-phase3-summary %}) |
 
 ## 10. 小结：这次读码的真实收获
 
