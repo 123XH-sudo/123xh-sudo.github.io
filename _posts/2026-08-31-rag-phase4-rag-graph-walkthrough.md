@@ -1,17 +1,18 @@
+---
 layout: single
 title: "RAG 学习笔记：Phase 4 rag_graph.py 带读"
 date: 2026-08-31 22:10:00 +0800
 categories:
-
-- 学习笔记
+  - 学习笔记
 tags:
-- RAG
-- Python
-- LangGraph
-- 个人博客
+  - RAG
+  - Python
+  - LangGraph
+  - 个人博客
 
-## toc: true
+toc: true
 toc_sticky: true
+---
 
 > **对照阅读：Phase 4 问答后端（第二篇）**
 >
